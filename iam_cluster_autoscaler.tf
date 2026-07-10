@@ -57,3 +57,12 @@ data "aws_iam_policy_document" "autoscaler_policy" {
   }
 }
 
+resource "aws_iam_policy" "autoscaler" {
+  name   = format("%s-autoscaler", var.project_name)
+  policy = data.aws_iam_policy_document.autoscaler_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "autoscaler" {
+  role       = aws_iam_role.autoscaler.name
+  policy_arn = aws_iam_policy.autoscaler.arn
+}
